@@ -111,4 +111,21 @@ class CodingChallengeApplicationTests {
             .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
         .andExpect(jsonPath("$.maxProfit", CoreMatchers.is(-1)));
   }
+
+
+  @Test
+  public void testStockPriceWithZero() throws Exception {
+
+    MaxStockProfitRequest request = new MaxStockProfitRequest(1L, LocalDateTime.of(2021, 12, 1, 10, 0, 0), LocalDateTime.of(2021, 12, 1, 11, 0, 0),
+        Arrays.asList(6, 5, 4, 3, 2, 1, 0));
+
+    mvc.perform(post("/api/stock/getMaxProfit")
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(objectMapper.writeValueAsString(request))
+    )
+        .andExpect(status().isOk())
+        .andExpect(content()
+            .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+        .andExpect(jsonPath("$.maxProfit", CoreMatchers.is(-1)));
+  }
 }
